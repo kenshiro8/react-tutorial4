@@ -1,4 +1,5 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
+import data from '../public/products.json'
 
 export default function App() {
   return (
@@ -27,7 +28,18 @@ export default function App() {
             </div>
           </form>
         </aside>
-        <main></main>
+        <main>
+          <ul>
+            {data.map((item) => (
+              <li key={item.name}>
+                <h2>{item.name}</h2>
+                <p>Price: ${item.price.toFixed(2)}</p>
+                <p>Type: {item.type}</p>
+                <img src={'/images/$item.name.toLowerCase()}.jpg'} alt={item.name} />
+              </li>
+            ))}
+          </ul>
+        </main>
       </div>
       <footer>
         <p>All icons found at the Noun Project:</p>
