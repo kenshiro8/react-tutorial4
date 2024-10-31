@@ -1,8 +1,15 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import data from '../public/products.json'
 
 export default function App() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('/products.json')
+      .then(response => response.json())
+      .then(data => setData(data));
+  }, []);
+
   return (
     <>
       <header>
