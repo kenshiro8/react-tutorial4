@@ -1,14 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { createRoot } from 'react-dom/client';
 
 export default function App() {
   const [data, setData] = useState([]);
+  const [selectCategory, setSelectCategory] = useState("All");
+  const [filteredData, setfilteredData] = useState(data);
 
   useEffect(() => {
     fetch('/products.json')
       .then(response => response.json())
-      .then(data => setData(data));
+      .then(data => {
+        setData(data);
+        setfilteredData(data);
+      });
   }, []);
+
+  const handleCatedoryChange = (event) => {
+    setSelectCategory(event.target.value);
+  };
+
+  const handleFilterClick = () => {
+    const newFilteredData = selectCategory === "All" 
+      ? data
+      : data.filter(item => item.type === selectCategory.toLowerCase());
+    setfilteredData(newFilteredData);
+  };
 
   return (
     <>
@@ -20,7 +35,7 @@ export default function App() {
           <form>
             <div>
               <label htmlFor="category">Choose a category:</label>
-              <select id="category">
+              <select id="category" onChange={handleCatedoryChange}>
                 <option>All</option>
                 <option>Vegetables</option>
                 <option>Meat</option>
@@ -32,12 +47,12 @@ export default function App() {
               <input type="text" id="searchTerm" placeholder="e.g. beans" />
             </div>
             <div>
-              <button>Filter results</button>
+              <button type="button" onClick={handleFilterClick}>Filter results</button>
             </div>
           </form>
         </aside>
         <main>
-          {data.map((item) => (
+          {filteredData.map((item) => (
             <section className={item.type.toLowerCase()}>
               <h2>{item.name}</h2>
               <p>${item.price.toFixed(2)}</p>
