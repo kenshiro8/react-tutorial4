@@ -4,6 +4,7 @@ export default function App() {
   const [data, setData] = useState([]);
   const [selectCategory, setSelectCategory] = useState("All");
   const [filteredData, setfilteredData] = useState(data);
+  const [searchTerm, setSearchTem] = useState("");
 
   useEffect(() => {
     fetch('/products.json')
@@ -18,10 +19,16 @@ export default function App() {
     setSelectCategory(event.target.value);
   };
 
+  const handleSearchTermChange = (event) => {
+    setSearchTem(event.target.value);
+  }
+
   const handleFilterClick = () => {
-    const newFilteredData = selectCategory === "All" 
-      ? data
-      : data.filter(item => item.type === selectCategory.toLowerCase());
+    const newFilteredData = data.filter(item => {
+      const matchesCategory = selectCategory === "All" || item.type === selectCategory.toLowerCase();
+      const matchesSearchTerm = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearchTerm;
+    });
     setfilteredData(newFilteredData);
   };
 
@@ -44,7 +51,7 @@ export default function App() {
             </div>
             <div>
               <label htmlFor="searchTerm">Enter search term:</label>
-              <input type="text" id="searchTerm" placeholder="e.g. beans" />
+              <input type="text" id="searchTerm" placeholder="e.g. beans" value={searchTerm} onChange={handleSearchTermChange} />
             </div>
             <div>
               <button type="button" onClick={handleFilterClick}>Filter results</button>
