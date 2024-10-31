@@ -1,5 +1,5 @@
-import React from 'react';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { createRoot } from 'react-dom/client';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -37,16 +37,13 @@ export default function App() {
           </form>
         </aside>
         <main>
-          <ul>
-            {data.map((item) => (
-              <li key={item.name}>
-                <h2>{item.name}</h2>
-                <p>Price: ${item.price.toFixed(2)}</p>
-                <p>Type: {item.type}</p>
-                <img src={`/images/${item.image}`} alt={item.name} />
-              </li>
-            ))}
-          </ul>
+          {data.map((item) => (
+            <section className={item.type.toLowerCase()}>
+              <h2>{item.name}</h2>
+              <p>${item.price.toFixed(2)}</p>
+              <img src={`/images/${item.image}`} alt={item.name} />
+            </section>
+          ))}
         </main>
       </div>
       <footer>
