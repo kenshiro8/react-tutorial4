@@ -36,7 +36,7 @@ export default function App() {
                 <h2>{item.name}</h2>
                 <p>Price: ${item.price.toFixed(2)}</p>
                 <p>Type: {item.type}</p>
-                <img src={'/images/$item.name.toLowerCase()}.jpg'} alt={item.name} />
+                <img src={`/images/${item.image}`} alt={item.name} />
               </li>
             ))}
           </ul>
